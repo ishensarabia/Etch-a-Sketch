@@ -18,28 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
     changeGridSizeButton.style.cursor = 'pointer';
 
     function colorSquare(square) {
-        let currentColor = square.style.backgroundColor;
-        if (!currentColor) {
+        let currentOpacity = parseFloat(square.style.opacity) || 0;
+        if (currentOpacity === 0) {
             // Generate a random color if the square has no color
             let randomColor = Math.floor(Math.random() * 16777215).toString(16);
             square.style.backgroundColor = `#${randomColor}`;
+            square.style.opacity = 0.1;
         } else {
-            // Darken the current color by 10%
-            currentColor = currentColor.substring(1); // remove #
-            let num = parseInt(currentColor, 16);
-            
-            let r = (num >> 16) - Math.floor(0.1 * 255);
-            let g = ((num >> 8) & 0x00FF) - Math.floor(0.1 * 255);
-            let b = (num & 0x0000FF) - Math.floor(0.1 * 255);
-
-            r = r < 0 ? 0 : r;
-            g = g < 0 ? 0 : g;
-            b = b < 0 ? 0 : b;
-
-            let newColor = (r << 16) | (g << 8) | b;
-            let newColorStr = '#' + newColor.toString(16).padStart(6, '0');
-
-            square.style.backgroundColor = newColorStr;
+            // Increase the opacity by 0.1
+            currentOpacity += 0.1;
+            if (currentOpacity > 1) currentOpacity = 1;
+            square.style.opacity = currentOpacity;
         }
     }
 
